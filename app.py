@@ -1,7 +1,5 @@
-from flask import Flask, render_template, url_for
-
-
-app = Flask(__name__)
+from flask import render_template, url_for, request
+from models import db, Pet, app
 
 
 @app.route('/')
@@ -13,9 +11,15 @@ def index():
 def pet():
     return render_template('pet.html')
 
-@app.route('/add-pet')
+
+@app.route('/add-pet', methods=['GET', 'POST'])
 def add_pet():
+    print(request.form)
+    print(request.form['name'])
     return render_template('addpet.html')
 
+
 if __name__ == '__main__':
+    with app.app_context():
+        db.create_all()
     app.run(debug=True, port=8000, host='127.0.0.1')
